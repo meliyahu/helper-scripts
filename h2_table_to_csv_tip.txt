@@ -1,0 +1,1 @@
+ CALL CSVWRITE('/Users/a1611590/java/AekosDevelopment/dumps/h2-to-csv/ausplots/R_BASALPOINT.csv',  'SELECT * FROM R_BASALPOINT',  'charset=UTF-8 fieldSeparator=,')
