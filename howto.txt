@@ -1,0 +1,13 @@
+1. Find a substring in files in folder recursively:
+   grep -rn "substring" *
+   or
+    grep -Ril "string to search for" . [note: this will list all files with the searchforstring]
+
+2. Replace a substring in all files in a folder:
+   find . -type f | xargs sed -i '' 's/stringtoreplace/replacement/g'
+
+3. in VI find a string a replace with:
+   :%s/find/replace/
+
+4. Find all files of a specific extension from current directory to subdirectory and replace a regex string:
+e.g sed -i 's/:_[0-9]*/:_1/' `find . -name "*.ttl"` 

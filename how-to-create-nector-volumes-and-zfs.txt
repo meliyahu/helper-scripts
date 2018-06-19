@@ -1,0 +1,26 @@
+Extending instance volume in Nectar and zfs
+1
+1.1. In the Nectar dashboard, create volume  and enter the details, eg name, size and leave defaults (In Volumes tab, click on +Create Volume)
+1.2. After the volume has been created, in Actions,  select Manage Attachments
+1.3. Assign the volume to the target instance.
+1.4. Done (note the device name the volume is assigned to the instance, eg /dev/vdc)
+
+Adding the volume (device) in zfs pool on the instance.
+2
+2.1. ssh to the instance in question
+2.2.  Do: sudo fdisk -l | grep dev
+    This will list all the devices (disks) in the instance)
+    You should see the volume (disks) you have just attached to this instance in the Nectar dashbouard (e..g Disk /dev/vdd: 214.7 GB, 214748364800 bytes)
+2.3. Do: sudo zpool add -f data /dev/devicename (where devicename is the disk you have attached, e.g /dev/vdd)
+   (Note: To create new pool and attach dev to it: sudo zpool create -f mydata /dev/vdb)
+   (Note: To install zfs on a instance (assume Ubunt 16.04:
+    sudo apt install zfs
+    Create pool named, e.g mosheh (assume step 1 done)
+    sudo zpool create -f mosheh /dev/vdd1
+    done.
+   )
+2.4. Do: sudo zpool status. You see the device you have just added to the pool (data) listed with others, e.g. vdd1 ONLINE 0 0 0
+2.5. Do: sudo zpool list. You should see that your zfs pool size has grown
+2.6. Do. sudo zfs create data/mynewdirectory (This will create a folder in pool folder. This is not necessary, however its good to
+orginise your file system folders in the zfs pool
+
