@@ -1,0 +1,54 @@
+
+1.Install tinkerpop-neo4j plugin
+See also: https://tinkerpop.apache.org/docs/3.2.4/reference/#neo4j-gremlin
+gremlin> :install org.apache.tinkerpop neo4j-gremlin 3.3.5
+
+gremlin> :quit
+Run gremlin console again
+
+2. Connect to Neo4j db
+gremlin>: plugin use tinkerpop.neo4j
+gremlin> graph = Neo4jGraph.open("/Users/aekos/java/neo4j-community-3.3.5/data/databases/graph.db")
+gremlin> g = graph.traversal()
+
+//////////////////////////////////////////////////////////
+
+See: https://github.com/meliyahu/neosemantics/tree/load-ttl-files-in-subdirectories
+1. $> 
+neo4j-admin memrec (for recommended neo4j memory configuration)
+Then add settings in neo4j.conf file
+
+2. 
+* CREATE INDEX ON :Resource(uri)
+CREATE INDEX ON :URI(uri)
+CREATE INDEX ON :BNode(uri) 
+CREATE INDEX ON :Class(uri)
+
+3. 
+CREATE (:NamespacePrefixDefinition {
+`http://www.w3.org/2001/XMLSchema#`: 'xsd',
+`http://www.w3.org/1999/02/22-rdf-syntax-ns#`: 'rdf',
+`http://www.w3.org/2000/01/rdf-schema#`: 'rdfs',
+`http://www.aekos.org.au/ontology/1.0.0#`: 'aekos',
+`http://www.aekos.org.au/ontology/1.0.0/aekos_common#`: 'aekos_common',
+`http://www.aekos.org.au/ontology/1.0.0/abares_fgc#`: 'abares_fgc', 
+`http://www.aekos.org.au/ontology/1.0.0/adelaide_koonamore#`: 'adelaide_koonamore', 
+`http://www.aekos.org.au/ontology/1.0.0/dewnr_bdbsa#`: 'dewnr_bdbsa',
+`http://www.aekos.org.au/ontology/1.0.0/dewnr_roadsideveg#`: 'dewnr_roadsideveg',
+`http://www.aekos.org.au/ontology/1.0.0/dpipwe_platypus#`: 'dpipwe_platypus',
+`http://www.aekos.org.au/ontology/1.0.0/oeh_vis#`: 'oeh_vis',
+`http://www.aekos.org.au/ontology/1.0.0/qld_corveg#`: 'qld_corveg',
+`http://www.aekos.org.au/ontology/1.0.0/tern_ausplots#`: 'tern_ausplots',
+`http://www.aekos.org.au/ontology/1.0.0/tern_natt#`: 'tern_natt',
+`http://www.aekos.org.au/ontology/1.0.0/tern_swatt#`: 'tern_swatt',
+`http://www.aekos.org.au/ontology/1.0.0/tern_trend#`: 'tern_trend',
+`http://www.aekos.org.au/ontology/1.0.0/uq_supersites_cover#`: 'uq_supersites_cover',
+`http://www.aekos.org.au/ontology/1.0.0/usyd_derg#`: 'usyd_derg',
+`http://www.aekos.org.au/ontology/1.0.0/wadec_ravensthorpe#`: 'wadec_ravensthorpe'})
+
+4.
+CALL semantics.importRDF("file:/Users/aekos/java/AekosDevelopment/dumps/ttl","Turtle", {shortenUrls: true, typesToLabels: true, commitSize: 9000})
+
+5. Show number of relationshipTypes
+call db.relationshipTypes() yield relationshipType return count(relationshipType) as numRelTypes
+
