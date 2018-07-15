@@ -1,0 +1,74 @@
+1) Backup data with pg_dump
+
+pg_dump -i -h localhost -p 5433 -U aekos -F c -c -b -v -O -f "/Users/a1611590/java/AekosDevelopment/apps/db-backup/db-aekos-backup-2013-07-04.dump" aekos
+
+Exclude tables starting with "auth", "colta", "download", "nsl", "publica","r_", "species", "spell", "stati" 
+pg_dump -i -h localhost -p 5433 -U aekos -T "auth*" -T "colta*" -T "download*" -T "nsl*" -T "publica*" -T "r_*" -T "species*" -T "spell*" -T "stati*" -F c -c -b -v -O -f "db-aekos-backup-2013-07-04.dump" aekos
+
+pg_dump -i -h localhost -p 5433 -U aekos -t "auth*" -t "colta*" -t "download*"  -F c -c -b -v -O -f "db-aekos-backup-2013-07-04.dump" aekos (Dump only the specified tables in the -t switches)
+
+-p, –port=PORT database server port number
+-i, –ignore-version proceed even when server version mismatches
+-h, –host=HOSTNAME database server host or socket directory
+-U, –username=NAME connect as specified database user
+-W, –password force password prompt (should happen automatically)
+-d, –dbname=NAME connect to database name
+-v, –verbose verbose mode
+-F, –format=c|t|p output file format (custom, tar, plain text)
+-c, –clean clean (drop) schema prior to create
+-b, –blobs include large objects in dump
+-v, –verbose verbose mode
+-f, –file=FILENAME output file name
+-T - exclude table from dump. E.g pg_dump -T 'aekos_*' mydb > mydb.sql . Dump all tables in mydb database but exclude all tables starting with aekos
+-t - only include the specified tables in the dump
+
+2) Restore data with pg_restore
+
+129.127.13.169 = Squid-Server (QA)
+pg_restore -i -h localhost -p 5433 -U aekos -d aekos -O -v "/Users/a1611590/java/AekosDevelopment/apps/db-backup/db-aekos-backup-2013-07-04.dump"
+pg_restore -U aekos -d aekos -p 5433 -c -O -v db-subgraph-data-only.dump (drop and create and restore only the tables in the dump file)
+
+-p, –port=PORT database server port number
+-i, –ignore-version =proceed even when server version mismatches
+-h, –host=HOSTNAME database server host or socket directory
+-U, –username=NAME connect as specified database user
+-W, –password force password prompt (should happen automatically)
+-d, –dbname=NAME connect to database name
+-c, - drop and and recreate entities (e.g. tables
+-O, --no-owner=Do not output commands to set ownership of objects to match the original database (objects are given the ownership of the user who is doing the restore)
+-v, –verbose =verbose mode
+
+Usage:
+
+select replace_foreign_key('user_rates_posts', 'post_id', 'ON DELETE CASCADE');
+Function:
+
+CREATE OR REPLACE FUNCTION 
+    replace_foreign_key(f_table VARCHAR, f_column VARCHAR, new_options VARCHAR) 
+RETURNS VARCHAR
+AS $$
+DECLARE constraint_name varchar;
+DECLARE reftable varchar;
+DECLARE refcolumn varchar;
+BEGIN
+
+SELECT tc.constraint_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name 
+FROM 
+    information_schema.table_constraints AS tc 
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+WHERE constraint_type = 'FOREIGN KEY' 
+   AND tc.table_name= f_table AND kcu.column_name= f_column
+INTO constraint_name, reftable, refcolumn;
+
+EXECUTE 'alter table ' || f_table || ' drop constraint ' || constraint_name || 
+', ADD CONSTRAINT ' || constraint_name || ' FOREIGN KEY (' || f_column || ') ' ||
+' REFERENCES ' || reftable || '(' || refcolumn || ') ' || new_options || ';';
+
+RETURN 'Constraint replaced: ' || constraint_name || ' (' || f_table || '.' || f_column ||
+ ' -> ' || reftable || '.' || refcolumn || '); New options: ' || new_options;
+
+END;
+$$ LANGUAGE plpgsql;
