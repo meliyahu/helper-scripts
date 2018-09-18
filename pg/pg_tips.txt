@@ -72,3 +72,7 @@ RETURN 'Constraint replaced: ' || constraint_name || ' (' || f_table || '.' || f
 
 END;
 $$ LANGUAGE plpgsql;
+
+# Get string before the last /
+select substring('aekos.org.au/collection/nsw.gov.au/nsw_atlas/vis_flora_module/COFF_FF/FF_PP108' from '(.*)\/')
+update organism set "surveyId" = substring(organism."surveyId" from '(.*)\/') where organism."surveyName" is null
