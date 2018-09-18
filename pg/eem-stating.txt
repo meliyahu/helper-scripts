@@ -1,0 +1,20 @@
+Refresh staging.
+Steps:
+
+1.Connect to postgres in a docker container:
+psql -h sqiud-pg -U squid -p port postgres
+
+2. Drop eem-api-staging db and recreate it
+
+3. Perform db restore
+pg_restore -h squid-pg -U -p port -d eem-api-staging -O -v db.dump
+
+4. \c to target db to  Restore ownerships
+select 'alter table ' || tablename || ' owner to staging;' from pg_tables where tableowner = 'squid';
+
+5. Paste and exc output of 4
+
+6. Done and Quit
+
+
+
