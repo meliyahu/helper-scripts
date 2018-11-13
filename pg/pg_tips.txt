@@ -81,3 +81,29 @@ update organism set "surveyId" = substring(organism."surveyId" from '(.*)\/') wh
 #use psql -U -d to connect then execute:
 SELECT pg_terminate_backend(pid)FROM pg_stat_activity WHERE datname = 'DATABASE_NAME_HERE';
 
+#Check location of configuration files:
+From the psql console:
+
+SELECT name, setting FROM pg_settings where category='File Locations';
+Which will output something like:
+
+       name        |                 setting
+-------------------+-----------------------------------------
+ config_file       | /etc/postgresql/10/main/postgresql.conf
+ data_directory    | /var/lib/postgresql/10/main
+ external_pid_file | /var/run/postgresql/10-main.pid
+ hba_file          | /etc/postgresql/10/main/pg_hba.conf
+ ident_file        | /etc/postgresql/10/main/pg_ident.conf
+(5 rows)
+
+Create new PGSQL user
+You can create a new database super user to use instead of the default postgres user.
+
+While in terminal, run:
+
+sudo -u postgres psql
+CREATE ROLE mysuperuser LOGIN PASSWORD 'whatever' SUPERUSER;
+
+#Postgres:Import csv to a table through pgAdmin
+COPY public.eemobservations FROM '/Users/a1611590/tern-projects/eem/dewnr_bdbsa/dewnr_eemobservations.csv' DELIMITER ',' CSV HEADER;
+
