@@ -107,3 +107,32 @@ CREATE ROLE mysuperuser LOGIN PASSWORD 'whatever' SUPERUSER;
 #Postgres:Import csv to a table through pgAdmin
 COPY public.eemobservations FROM '/Users/a1611590/tern-projects/eem/dewnr_bdbsa/dewnr_eemobservations.csv' DELIMITER ',' CSV HEADER;
 
+#works
+copy public.eemobservations (
+	"stateProvince","datasetName", "surveyId",
+	"siteId", "samplingUnitId", "visitId", 
+	"featureOfInterestParentId", "featureId", "featureOfInterest",
+	"featureOfInterestQualifier", "originalFeatureOfInterestQualifier",
+	"originalFeatureOfInterestQualifierDefinition", 
+	protocol, "protocolLink", characteristic, "characteristicQualifier",
+	value, lower, upper, category, description, standard)
+	FROM '/Users/a1611590/tern-projects/eem/dewnr_bdbsa/dewnr_eemobservations.csv' 
+	DELIMITER ',' CSV HEADER; 
+	
+copy public.eemobservations (
+	"stateProvince","datasetName", "surveyId",
+	"siteId", "samplingUnitId", "visitId", 
+	"featureOfInterestParentId", "featureId", "featureOfInterest",
+	"featureOfInterestQualifier", "originalFeatureOfInterestQualifier",
+	"originalFeatureOfInterestQualifierDefinition", 
+	protocol, "protocolLink", characteristic, "characteristicQualifier",
+	value, lower, upper, category, description, standard)
+	FROM '/tmp/dewnr_eemobservations.csv' 
+	DELIMITER ',' CSV HEADER; 
+
+#Rename existing column to br primary and auto increment
+1. Create sequence first
+create sequence tablename_id_seq owned by tablename.id;
+2. Alter column   
+alter table tablename
+alter column id set default nextval('tablename_id_seq');
