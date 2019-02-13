@@ -5,6 +5,9 @@
 
 2. Replace a substring in all files in a folder:
    find . -type f | xargs sed -i '' 's/stringtoreplace/replacement/g'
+or
+2.1
+ grep --null -lr "stringtoplace" | xargs --null sed -i 's/stringtoreplace/replacewith/g'
 
 3. in VI find a string a replace with:
    :%s/find/replace/
