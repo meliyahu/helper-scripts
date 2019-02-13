@@ -129,6 +129,20 @@ copy public.eemobservations (
 	value, lower, upper, category, description, standard)
 	FROM '/tmp/dewnr_eemobservations.csv' 
 	DELIMITER ',' CSV HEADER; 
+	
+copy public.eemsitedata (
+"custodian", "rights", "bibliographicReference", "dateModified",
+"language", "datasetName", "stateProvince", "surveyId",
+"surveyName", "surveyOrganisation", "surveyType", "surveyMethodology",
+"surveyMethodologyDescription", "siteId", "originalSiteCode",
+"geodeticDatum", "decimalLatitude", "decimalLongitude", "locationDescription",
+"aspect", "slope", "landformPattern", "landformElement", "elevation", "visitId",
+"visitDate", "visitOrganisation", "visitObservers", "siteDescription", "condition",
+"structuralForm", "ownerClassification", "currentClassification",
+"samplingUnitId", "samplingUnitArea", "samplingUnitShape"
+)
+FROM '/tmp/oeh_eemsitedata.csv' DELIMITER ',' CSV HEADER;
+	
 
 copy public.eemsitedata (
 "datasetName", "stateProvince", "custodian", 
@@ -144,10 +158,13 @@ copy public.eemsitedata (
 )
 FROM '/tmp/ravensthorpe_siteData.csv'
 DELIMITER ',' CSV HEADER;
-
-#Rename existing column to br primary and auto increment
+#Rename existing column to be primary and auto increment
 1. Create sequence first
 create sequence tablename_id_seq owned by tablename.id;
 2. Alter column   
 alter table tablename
 alter column id set default nextval('tablename_id_seq');
+
+#Grant a user select privilege on all tables in a schema
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO user;
+
