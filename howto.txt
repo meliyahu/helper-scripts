@@ -2,6 +2,9 @@
    grep -rn "substring" *
    or
     grep -Ril "string to search for" . [note: this will list all files with the searchforstring]
+   or how about searching for the string is specific file type only:
+   grep -Ril --include='*.ttl' "the target string" .
+
 
 2. Replace a substring in all files in a folder:
    find . -type f | xargs sed -i '' 's/stringtoreplace/replacement/g'
