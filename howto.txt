@@ -7,7 +7,10 @@
 
 
 2. Replace a substring in all files in a folder:
+   (Mac)
    find . -type f | xargs sed -i '' 's/stringtoreplace/replacement/g'
+   (Linux)
+   find . -type f | xargs sed -i 's/stringtoreplace/replacement/g'
 or
 2.1
  grep --null -lr "stringtoplace" | xargs --null sed -i 's/stringtoreplace/replacewith/g'
