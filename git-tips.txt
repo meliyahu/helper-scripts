@@ -1,0 +1,28 @@
+1.Rename git tags
+	git tag new old
+	git tag -d old
+	git push origin :refs/tags/old
+	git push --tags
+
+2. Then let others do the following to clean local tags and pull remote tags
+   git tag -l | xargs git tag -d
+   git fetch
+
+3. show tags with 9 lines of message
+   git tag -n9
+
+4. push a new branch to remote
+   git push -u origin feature_branch_name
+
+5. Delete remote branch
+   git push --delete <remote_name> <branch_name>
+   e.g. git push --delete origin my-branch
+
+6. Delete locak branch
+   git branch -d <branch_name> or git branch -D <branch_name>
+   e.g. git branch -d my-branch
+
+Note: The -d option is an alias for --delete, 
+which only deletes the branch if it has already been fully merged 
+in its upstream branch. You could also use -D, which is an alias for --delete --force, 
+which deletes the branch "irrespective of its merged status."
