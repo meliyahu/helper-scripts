@@ -10,7 +10,7 @@
 sudo apt-get update
 
 # 2. Install some useful tools
-sudo apt-get -y install vim tmux htop unzip
+sudo apt-get -y install vim tmux htop unzip net-tools
 
 # 3. Install jdk 12
 #   Installing Oracle JDK 12 using PPA

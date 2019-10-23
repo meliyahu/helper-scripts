@@ -19,4 +19,7 @@ or
    :%s/find/replace/
 
 4. Find all files of a specific extension from current directory to subdirectory and replace a regex string:
-e.g sed -i 's/:_[0-9]*/:_1/' `find . -name "*.ttl"` 
+e.g sed -i 's/:_[0-9]*/:_1/' `find . -name "*.ttl"`
+
+5. Set time on ubuntu instance
+   sudo dpkg-reconfigure tzdata 
