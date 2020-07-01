@@ -18,11 +18,19 @@
    git push --delete <remote_name> <branch_name>
    e.g. git push --delete origin my-branch
 
-6. Delete locak branch
+6. Delete local branch
    git branch -d <branch_name> or git branch -D <branch_name>
    e.g. git branch -d my-branch
 
-Note: The -d option is an alias for --delete, 
-which only deletes the branch if it has already been fully merged 
-in its upstream branch. You could also use -D, which is an alias for --delete --force, 
-which deletes the branch "irrespective of its merged status."
+   Note: The -d option is an alias for --delete, 
+   which only deletes the branch if it has already been fully merged 
+   in its upstream branch. You could also use -D, which is an alias for --delete --force, 
+   which deletes the branch "irrespective of its merged status."
+
+7. How to update git sub-module to latest
+   git clone git@github.com:speedovation/kiwi-resources.git resources
+   git submodule init
+   First time
+     git submodule update --init --recursive
+   Afterwards
+     git submodule update --recursive
