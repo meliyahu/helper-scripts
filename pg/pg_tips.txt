@@ -168,3 +168,10 @@ alter column id set default nextval('tablename_id_seq');
 #Grant a user select privilege on all tables in a schema
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO user;
 
+# Check database size
+1. Login using psql
+2. Run: SELECT pg_size_pretty( pg_database_size('dbname') );
+
+# Check database table size
+SELECT pg_size_pretty( pg_total_relation_size('tablename') );
+
