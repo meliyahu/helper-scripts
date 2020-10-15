@@ -1,0 +1,5 @@
+Update node:
+1. sudo npm install -g n
+2. sudo n stable
+
+
