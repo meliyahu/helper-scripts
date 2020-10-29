@@ -34,3 +34,7 @@
      git submodule update --init --recursive
    Afterwards
      git submodule update --recursive
+
+8. Check difference in files between current branch and Master
+   git diff ..master path/to/file
+
